@@ -1,80 +1,112 @@
 <template>
   <div class="home">
-
     <van-pull-refresh v-model="refreshing" @refresh="onRefresh">
-
-        <van-swipe class="bander home-block" :autoplay="3000" indicator-color="white">
+      <div class="bander">
+        <van-swipe :autoplay="3000" indicator-color="red">
           <van-swipe-item v-for="(image, index) in imageList" :key="index">
-            <img v-lazy="image" />
+  
+            <van-image
+              fit="cover"
+              lazy-load
+              :src="image"
+            />
           </van-swipe-item>
         </van-swipe>
+      </div>
 
-        <van-grid class="home-block" direction="horizontal" :column-num="6" :gutter="2">
+      <div class="homegroup-1">
+        <fork></fork>
+        <van-grid
+          class="home-block"
+          direction="horizontal"
+          :column-num="6"
+          :gutter="10"
+        >
           <van-grid-item v-for="(image, index) in imageList" :key="index">
-            <img v-lazy="image" />
+             <van-image
+              fit="cover"
+              lazy-load
+              :src="image"
+            />
           </van-grid-item>
         </van-grid>
 
         <van-grid
-          class="home-block" 
+          class="home-block activity"
           direction="horizontal"
-          :column-num="4"
-          :gutter="2"
+          :column-num="3"
+          :gutter="1"
         >
-          <van-grid-item icon="home-o" text="邀请有礼" dot />
-          <van-grid-item icon="home-o" text="邀请有礼" dot />
-          <van-grid-item icon="home-o" text="文字" />
-          <van-grid-item icon="search" text="文字" />
+          <van-grid-item v-for="(image, index) in activityList" :key="index">
+            <defual></defual>
+          </van-grid-item>
         </van-grid>
 
-        <van-swipe class="home-block coupon"  :autoplay="3000" indicator-color="white">
+        <van-swipe
+          class="home-block coupon"
+          :autoplay="3000"
+          indicator-color="white"
+        >
           <van-swipe-item v-for="(image, index) in imageList" :key="index">
-            <img v-lazy="image" />
+             <van-image
+              fit="cover"
+              lazy-load
+              :src="image"
+            />
           </van-swipe-item>
         </van-swipe>
 
         <van-swipe
-          class="home-block activity" 
+          class="home-block activity"
           :loop="false"
           :width="240"
           indicator-color="white"
         >
           <van-swipe-item v-for="(image, index) in imageList" :key="index">
-            <img v-lazy="image" />
+             <van-image
+              fit="cover"
+              lazy-load
+              :src="image"
+            />
           </van-swipe-item>
         </van-swipe>
 
         <van-tabs
-          class="home-block" 
+          class="home-block"
           :before-change="tabBeforeChange"
           scrollspy
           sticky
         >
           <van-tab v-for="index in 4" :key="index" :title="'选项 ' + index">
-            内容 {{ index }}
-
+            <div class="van-tab-title">内容 {{ index }}</div>
             <van-grid direction="horizontal" :column-num="2" :gutter="2">
               <van-grid-item v-for="(image, index) in imageList" :key="index">
-                <img v-lazy="image" />
+                <defual class="tab-item-defual"></defual>
               </van-grid-item>
             </van-grid>
           </van-tab>
         </van-tabs>
-
+      </div>
     </van-pull-refresh>
   </div>
 </template>
 
 <script>
+import fork from "./components/fork";
+import defual from "./components/defual";
+
 export default {
   name: "Home",
   components: {
-    // HelloWorld,
+    fork,
+    defual,
   },
   data() {
     return {
       count: 0,
+      current: 0,
       list: [],
+
       loading: false,
       finished: false,
       refreshing: false,
@@ -85,6 +117,11 @@ export default {
         "https://img.yzcdn.cn/vant/apple-2.jpg",
         "https://img.yzcdn.cn/vant/apple-1.jpg",
         "https://img.yzcdn.cn/vant/apple-2.jpg",
+      ],
+      activityList: [
+        "https://img.yzcdn.cn/vant/apple-1.jpg",
+        "https://img.yzcdn.cn/vant/apple-2.jpg",
+        "https://img.yzcdn.cn/vant/apple-1.jpg",
       ],
       index: 0,
     };
@@ -124,35 +161,55 @@ export default {
 </script>
 
 <style>
-
-/* .home{
-  margin: 10pt;
-} */
-
-.home-block{
-  margin: 10pt;
-  border-radius: 8pt;
-  background-color: clear;
-  overflow: auto;
-}
-img{
-
-  width: 100%;
-  height: 100%;
-  object-fit:cover;
-}
-
 .bander {
   background-color: white;
-  height: 120pt;
+  height: 200px;
+  overflow: hidden;
+  border-radius: 5px;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 0px 100px 5px;
+}
+.bander .van-swipe__indicators {
+  position: absolute;
+  top: 155px;
+  padding: auto 5px;
+  font-size: 12px;
 }
 
-.van-swipe-item {
+.bander i {
+  background-color: aqua;
 }
-.tips {
 
+.homegroup-1 {
+  position: relative;
+  top: -40px;
+  margin: 10px 10px;
+}
+
+.home-block {
   border-radius: 8pt;
-  /* background-color: white; */
+  background-color: white;
+  margin: 4px 0px;
+  padding: 4px 0px;
+}
+
+.van-swipe {
+  background-size: cover;
+  background-position: center;
+}
+
+.van-grid-item__content {
+  padding: 1px;
+}
+.van-grid-item__content--surround {
+  background-color: rgba(0, 0, 0, 0.01);
+  border-radius: 8px;
+}
+.van-grid-item__content--surround::after {
+  border: none;
+}
+
+.tips {
+  border-radius: 8pt;
   background-color: clear;
 }
 .tabs {
@@ -170,7 +227,6 @@ img{
 }
 
 .activity {
-
   height: 40pt;
 }
 
@@ -178,5 +234,8 @@ img{
   height: 80pt;
   margin: 10pt;
   border-radius: 8pt;
+}
+.tab-item-defual {
+  height: 160px;
 }
 </style>

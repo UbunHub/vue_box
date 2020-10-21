@@ -22,6 +22,9 @@ export default {
 </script>
 
 <style lang="scss">
+.hello{
+  height: 100%;
+}
 .tabba-router-view{
   padding-bottom: 44px;
 }
